@@ -72,6 +72,7 @@ GrowEasy CRM Schema:
 - data_source: MUST map to one of these exact enums: "leads_on_demand" | "meridian_tower" | "eden_park" | "varah_swamy" | "sarjapur_plots". If none fit confidently, leave blank ("").
 - possession_time: Property possession time/timeline.
 - description: Additional details/description.
+- confidence_level: MUST map to one of these exact enums: "High" | "Medium" | "Low". Based on how clean and clear the column mapping was (e.g., standard fields = "High", ambiguous columns or guesswork = "Medium" or "Low").
 
 Strict Rules:
 1. If a record has NEITHER email nor a mobile number, it must be skipped. Set "skipped": true and provide "skip_reason": "Missing contact details".
@@ -101,7 +102,8 @@ Provide your output as a JSON array of objects, matching this structure:
       "crm_note": "...",
       "data_source": "leads_on_demand",
       "possession_time": "...",
-      "description": "..."
+      "description": "...",
+      "confidence_level": "High"
     }
   },
   {
@@ -187,6 +189,12 @@ Provide your output as a JSON array of objects, matching this structure:
       createdAt = currentDate;
     }
 
+    const allowedConfidences = ['High', 'Medium', 'Low'];
+    let confidenceLevel = (mapped.confidence_level || 'High') as CRMRecord['confidence_level'];
+    if (!allowedConfidences.includes(confidenceLevel)) {
+      confidenceLevel = 'High';
+    }
+
     imported.push({
       created_at: createdAt,
       name: mapped.name || '',
@@ -203,6 +211,7 @@ Provide your output as a JSON array of objects, matching this structure:
       data_source: dataSource,
       possession_time: mapped.possession_time || '',
       description: mapped.description || '',
+      confidence_level: confidenceLevel,
     });
   });
 

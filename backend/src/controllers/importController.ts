@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import Papa from 'papaparse';
+import { z } from 'zod';
 import { processAllRecords } from '../services/aiService';
 import { ImportResponse } from '../types';
+
+const importPayloadSchema = z.object({
+  records: z.array(z.record(z.string(), z.any())).min(1, 'No valid records provided for mapping.'),
+  batchSize: z.number().int().min(1).max(100).optional(),
+  apiKey: z.string().optional(),
+});
 
 /**
  * Handle CSV import requests
@@ -51,6 +58,21 @@ export async function handleImport(req: Request, res: Response) {
       } as ImportResponse);
     }
 
+    // Validate request schema using Zod
+    const validationResult = importPayloadSchema.safeParse({
+      records: rawRecords,
+      batchSize: req.body.batchSize ? parseInt(req.body.batchSize, 10) : undefined,
+      apiKey: req.body.apiKey || undefined
+    });
+
+    if (!validationResult.success) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed: ' + validationResult.error.issues.map((e: any) => e.message).join(', '),
+        errors: validationResult.error.issues
+      });
+    }
+
     // Extract API key if supplied by the client
     let clientApiKey = (req.headers['x-gemini-key'] || req.body.apiKey) as string | undefined;
     const authHeader = req.headers['authorization'];
@@ -61,7 +83,7 @@ export async function handleImport(req: Request, res: Response) {
     }
 
     // Optional batchSize override
-    const batchSize = req.body.batchSize ? parseInt(req.body.batchSize, 10) : 25;
+    const batchSize = validationResult.data.batchSize || 25;
 
     // Process the records through AI
     const result = await processAllRecords(rawRecords, batchSize, clientApiKey);

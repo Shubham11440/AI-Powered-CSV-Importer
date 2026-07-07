@@ -14,6 +14,7 @@ export interface CRMRecord {
   data_source: 'leads_on_demand' | 'meridian_tower' | 'eden_park' | 'varah_swamy' | 'sarjapur_plots' | '';
   possession_time: string;
   description: string;
+  confidence_level: 'High' | 'Medium' | 'Low' | '';
 }
 
 export interface SkippedRecord {
