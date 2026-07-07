@@ -120,7 +120,7 @@ Create a `.env` file in the `backend` folder (or copy `backend/.env.example` to 
 ```env
 PORT=5000
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-1.5-flash
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
 *(Note: If `GEMINI_API_KEY` is not provided in the backend `.env`, you can enter it directly in the frontend UI's **Configure** modal to overwrite).*

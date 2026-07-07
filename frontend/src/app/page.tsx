@@ -27,7 +27,9 @@ import {
   Copy,
   FileJson,
   X,
-  ShieldAlert
+  ShieldAlert,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 interface CRMRecord {
@@ -106,6 +108,9 @@ export default function Home() {
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [sourceFilter, setSourceFilter] = useState<string>('ALL');
 
+  // Theme state
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
   // Config States (Stored locally)
   const [showConfig, setShowConfig] = useState(false);
   const [apiUrl, setApiUrl] = useState('http://localhost:5000/api/import');
@@ -118,8 +123,21 @@ export default function Home() {
       setApiUrl(localStorage.getItem('groweasy_api_url') || 'http://localhost:5000/api/import');
       setGeminiApiKey(localStorage.getItem('groweasy_gemini_key') || '');
       setBatchSize(parseInt(localStorage.getItem('groweasy_batch_size') || '20', 10));
+      
+      const savedTheme = (localStorage.getItem('groweasy_theme') || 'dark') as 'dark' | 'light';
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
     }
   }, []);
+
+  // Theme toggle helper
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('groweasy_theme', nextTheme);
+    triggerToast(`Switched to ${nextTheme} theme`, 'info');
+  };
 
   // Scroll Console to bottom
   useEffect(() => {
@@ -553,7 +571,7 @@ export default function Home() {
       
       {/* HEADER SECTION */}
       <header style={{
-        background: 'rgba(17, 20, 32, 0.8)',
+        background: 'var(--bg-secondary)',
         backdropFilter: 'blur(10px)',
         borderBottom: '1px solid var(--border)',
         padding: '16px 24px',
@@ -579,14 +597,25 @@ export default function Home() {
             </div>
           </div>
           
-          <button 
-            onClick={() => setShowConfig(true)}
-            className="btn btn-secondary" 
-            style={{ padding: '8px 14px', borderRadius: '6px', fontSize: '0.85rem' }}
-          >
-            <Settings size={16} />
-            Configure
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              onClick={toggleTheme}
+              className="btn btn-secondary"
+              style={{ padding: '8px', borderRadius: '6px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+
+            <button 
+              onClick={() => setShowConfig(true)}
+              className="btn btn-secondary" 
+              style={{ padding: '8px 14px', borderRadius: '6px', fontSize: '0.85rem' }}
+            >
+              <Settings size={16} />
+              Configure
+            </button>
+          </div>
         </div>
       </header>
 
@@ -612,7 +641,7 @@ export default function Home() {
             </h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
-              <div>
+              {/* <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                   Backend API URL
                 </label>
@@ -632,7 +661,7 @@ export default function Home() {
                   }}
                   placeholder="http://localhost:5000/api/import"
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
@@ -899,11 +928,11 @@ export default function Home() {
                       onChange={(e) => setPreviewSearch(e.target.value)}
                       style={{
                         width: '100%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                        backgroundColor: 'var(--bg-secondary)',
                         border: '1px solid var(--border)',
                         borderRadius: '6px',
                         padding: '10px 10px 10px 36px',
-                        color: '#fff',
+                        color: 'var(--text-primary)',
                         fontSize: '0.875rem',
                         outline: 'none'
                       }}
@@ -1186,11 +1215,11 @@ export default function Home() {
                         onChange={(e) => setSuccessSearch(e.target.value)}
                         style={{
                           width: '100%',
-                          backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                          backgroundColor: 'var(--bg-secondary)',
                           border: '1px solid var(--border)',
                           borderRadius: '6px',
                           padding: '10px 10px 10px 36px',
-                          color: '#fff',
+                          color: 'var(--text-primary)',
                           fontSize: '0.875rem',
                           outline: 'none'
                         }}
@@ -1204,11 +1233,11 @@ export default function Home() {
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                         style={{
-                          backgroundColor: '#111420',
+                          backgroundColor: 'var(--bg-secondary)',
                           border: '1px solid var(--border)',
                           borderRadius: '6px',
                           padding: '10px 16px',
-                          color: '#fff',
+                          color: 'var(--text-primary)',
                           fontSize: '0.875rem',
                           outline: 'none',
                           cursor: 'pointer'
@@ -1228,11 +1257,11 @@ export default function Home() {
                         value={sourceFilter}
                         onChange={(e) => setSourceFilter(e.target.value)}
                         style={{
-                          backgroundColor: '#111420',
+                          backgroundColor: 'var(--bg-secondary)',
                           border: '1px solid var(--border)',
                           borderRadius: '6px',
                           padding: '10px 16px',
-                          color: '#fff',
+                          color: 'var(--text-primary)',
                           fontSize: '0.875rem',
                           outline: 'none',
                           cursor: 'pointer'
@@ -1261,11 +1290,11 @@ export default function Home() {
                         onChange={(e) => setSkippedSearch(e.target.value)}
                         style={{
                           width: '100%',
-                          backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                          backgroundColor: 'var(--bg-secondary)',
                           border: '1px solid var(--border)',
                           borderRadius: '6px',
                           padding: '10px 10px 10px 36px',
-                          color: '#fff',
+                          color: 'var(--text-primary)',
                           fontSize: '0.875rem',
                           outline: 'none'
                         }}
@@ -1309,7 +1338,7 @@ export default function Home() {
                                     {lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}
                                   </div>
                                 </td>
-                                <td style={{ fontWeight: 600, color: '#fff' }}>
+                                <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <User size={14} color="var(--primary-hover)" />
                                     {lead.name || 'Unknown'}
@@ -1435,7 +1464,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer style={{
-        background: '#090b11',
+        background: 'var(--bg-primary)',
         borderTop: '1px solid var(--border)',
         padding: '20px 24px',
         color: 'var(--text-muted)',
@@ -1443,7 +1472,7 @@ export default function Home() {
         textAlign: 'center'
       }}>
         <div className="container">
-          <p>© {new Date().getFullYear()} GrowEasy. AI-Powered CRM Importer. Made for WFH Software Developer Assignment.</p>
+          <p>© {new Date().getFullYear()} GrowEasy. AI-Powered CRM Importer. Made by Shubham Mali.</p>
         </div>
       </footer>
 

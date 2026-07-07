@@ -31,6 +31,31 @@
   --font-family: var(--font-geist-sans), Arial, sans-serif;
 }
 
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(241, 245, 249, 0.8);
+  --bg-card-hover: rgba(226, 232, 240, 0.95);
+  
+  --primary: #4f46e5;
+  --primary-hover: #3730a3;
+  --primary-glow: rgba(79, 70, 229, 0.1);
+  
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.1);
+  
+  --warning: #d97706;
+  --danger: #dc2626;
+  --danger-glow: rgba(220, 38, 38, 0.1);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  
+  --border: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(79, 70, 229, 0.4);
+}
+
 /* Global Reset */
 * {
   box-sizing: border-box;
@@ -47,6 +72,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Background Gradients */
@@ -61,6 +87,11 @@ body::before {
               radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
   z-index: -1;
   pointer-events: none;
+}
+
+[data-theme="light"] body::before {
+  background: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.04) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
 }
 
 /* Typography */
@@ -83,16 +114,17 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(9, 11, 17, 0.5);
+  background: rgba(9, 11, 17, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--text-muted);
   border-radius: 4px;
+  opacity: 0.5;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--text-secondary);
 }
 
 /* Glassmorphism Cards */
@@ -107,6 +139,10 @@ a {
 
 .glass-panel:hover {
   border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .glass-panel:hover {
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Interactive Components */
@@ -147,8 +183,16 @@ a {
   border: 1px solid var(--border);
 }
 
+[data-theme="light"] .btn-secondary {
+  background: rgba(0, 0, 0, 0.03);
+}
+
 .btn-secondary:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .btn-secondary:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .btn-danger {
@@ -162,7 +206,7 @@ a {
 
 /* Drag & Drop Upload Container */
 .dropzone {
-  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border: 2px dashed var(--border);
   background: rgba(22, 28, 45, 0.3);
   border-radius: var(--radius-lg);
   padding: 40px 20px;
@@ -174,6 +218,10 @@ a {
   align-items: center;
   justify-content: center;
   gap: 16px;
+}
+
+[data-theme="light"] .dropzone {
+  background: rgba(0, 0, 0, 0.01);
 }
 
 .dropzone:hover, .dropzone.active {
@@ -189,6 +237,10 @@ a {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: rgba(17, 20, 32, 0.4);
+}
+
+[data-theme="light"] .table-container {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .table-wrapper {
@@ -207,7 +259,7 @@ table {
 th {
   position: sticky;
   top: 0;
-  background: #111420;
+  background: var(--bg-secondary);
   color: var(--text-primary);
   font-weight: 600;
   padding: 14px 16px;

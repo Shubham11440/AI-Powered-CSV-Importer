@@ -8,7 +8,7 @@ const getModel = (customApiKey?: string) => {
     throw new Error('GEMINI_API_KEY is missing. Please configure it on the server or provide it in the request headers.');
   }
   const genAI = new GoogleGenerativeAI(apiKey);
-  const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
   return genAI.getGenerativeModel({ model: modelName });
 };
 
