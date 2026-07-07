@@ -29,7 +29,8 @@ import {
   X,
   ShieldAlert,
   Sun,
-  Moon
+  Moon,
+  ArrowLeft
 } from 'lucide-react';
 
 interface CRMRecord {
@@ -985,8 +986,8 @@ export default function Home() {
 
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button onClick={handleRemoveFile} className="btn btn-secondary" style={{ padding: '10px 16px' }}>
-                      <Trash2 size={16} />
-                      Remove
+                      <ArrowLeft size={16} />
+                      Back
                     </button>
                     <button onClick={handleConfirmImport} className="btn btn-primary" style={{ padding: '10px 24px' }}>
                       <Play size={16} />
