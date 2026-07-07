@@ -1201,7 +1201,7 @@ export default function Home() {
                 }}>
                   <ShieldAlert size={32} color="var(--danger)" />
                 </div>
-                <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', color: '#fff' }}>
+                <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--text-primary)' }}>
                   {errorState.message}
                 </h2>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: '1.5' }}>
@@ -1226,7 +1226,7 @@ export default function Home() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '24px' }}>
                 <div className="glass-panel" style={{ padding: '20px', position: 'relative', overflow: 'hidden' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>TOTAL RECORDS</span>
-                  <h3 style={{ fontSize: '2rem', marginTop: '4px', color: '#fff' }}>{importStats.total}</h3>
+                  <h3 style={{ fontSize: '2rem', marginTop: '4px', color: 'var(--text-primary)' }}>{importStats.total}</h3>
                   <Database size={40} style={{ position: 'absolute', right: '16px', bottom: '12px', opacity: 0.05 }} />
                 </div>
                 
