@@ -221,14 +221,14 @@ export default function Home() {
 
   // Config States (Stored locally)
   const [showConfig, setShowConfig] = useState(false);
-  const [apiUrl, setApiUrl] = useState('http://localhost:5000/api/import');
+  const [apiUrl, setApiUrl] = useState('https://ai-powered-csv-importer-backend.vercel.app/api/import');
   const [geminiApiKey, setGeminiApiKey] = useState('');
   const [batchSize, setBatchSize] = useState(20);
 
   // Load configs on client mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setApiUrl(localStorage.getItem('groweasy_api_url') || 'http://localhost:5000/api/import');
+      setApiUrl(localStorage.getItem('groweasy_api_url') || 'https://ai-powered-csv-importer-backend.vercel.app/api/import');
       setGeminiApiKey(localStorage.getItem('groweasy_gemini_key') || '');
       setBatchSize(parseInt(localStorage.getItem('groweasy_batch_size') || '20', 10));
       

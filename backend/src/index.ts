@@ -201,3 +201,5 @@ app.listen(PORT, () => {
   logger.info(`Health check: http://localhost:${PORT}/health`);
   logger.info(`Interactive API docs: http://localhost:${PORT}/api-docs`);
 });
+
+export default app;
