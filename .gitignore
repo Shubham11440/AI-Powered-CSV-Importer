@@ -13,7 +13,8 @@ node_modules/
 /build
 /.next/
 /out/
-/dist
+dist/
+backend/dist/
 
 # Debug
 npm-debug.log*

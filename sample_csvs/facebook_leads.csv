@@ -1,0 +1,6 @@
+created_time,full_name,email,phone_number,company_name,source,status_notes
+2026-05-13 14:20:48,John Doe,john.doe@example.com,+91 9876543210,GrowEasy,Facebook Ads,GOOD_LEAD_FOLLOW_UP: Reschedule demo
+2026-05-13 14:25:30,Sarah Johnson,sarah.johnson@example.com,9876543211,Tech Solutions,Facebook Organic,DID_NOT_CONNECT: Busy, will try next week
+2026-05-13 14:30:15,Rajesh Patel,rajesh.patel@example.com,+919876543212,Startup Inc,Facebook Ads,BAD_LEAD: Not interested in our services
+2026-05-13 14:35:22,Priya Singh,priya.singh@example.com,9876543213,Enterprise Corp,Facebook Ads,SALE_DONE: Onboarding in progress
+2026-07-01 10:00:00,Malformed Record With No Contact,no-contact-at-all,,No Contact Company,Facebook Ads,Should be skipped
