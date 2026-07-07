@@ -68,6 +68,113 @@ interface LogEntry {
   type: 'info' | 'success' | 'warning' | 'error';
 }
 
+interface ToastProps {
+  id: string;
+  message: string;
+  type: 'success' | 'error' | 'info';
+  onDismiss: (id: string) => void;
+}
+
+const DraggableToast: React.FC<ToastProps> = ({ id, message, type, onDismiss }) => {
+  const [startX, setStartX] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [opacity, setOpacity] = useState(1);
+  const [isDismissing, setIsDismissing] = useState(false);
+
+  const handleStart = (clientX: number) => {
+    setStartX(clientX);
+    setIsDragging(true);
+  };
+
+  const handleMove = (clientX: number) => {
+    if (!isDragging) return;
+    const diffX = clientX - startX;
+    setCurrentX(diffX);
+    
+    const absDiff = Math.abs(diffX);
+    const newOpacity = Math.max(0.1, 1 - absDiff / 200);
+    setOpacity(newOpacity);
+  };
+
+  const handleEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    if (Math.abs(currentX) > 100) {
+      setIsDismissing(true);
+      setTimeout(() => {
+        onDismiss(id);
+      }, 200);
+    } else {
+      setCurrentX(0);
+      setOpacity(1);
+    }
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    handleStart(e.clientX);
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    handleMove(e.clientX);
+  };
+
+  const onMouseUp = () => {
+    handleEnd();
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    handleStart(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    handleMove(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    handleEnd();
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      const handleGlobalMove = (e: MouseEvent) => handleMove(e.clientX);
+      const handleGlobalUp = () => handleEnd();
+
+      window.addEventListener('mousemove', handleGlobalMove);
+      window.addEventListener('mouseup', handleGlobalUp);
+
+      return () => {
+        window.removeEventListener('mousemove', handleGlobalMove);
+        window.removeEventListener('mouseup', handleGlobalUp);
+      };
+    }
+  }, [isDragging, startX]);
+
+  return (
+    <div
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      className={`toast toast-${type}`}
+      style={{
+        transform: `translateX(${currentX}px)`,
+        opacity: isDismissing ? 0 : opacity,
+        transition: isDragging ? 'none' : 'transform 0.2s ease-out, opacity 0.2s ease-out',
+        cursor: isDragging ? 'grabbing' : 'grab',
+        touchAction: 'none',
+        userSelect: 'none',
+      }}
+    >
+      {type === 'success' && <CheckCircle2 size={16} color="var(--success)" />}
+      {type === 'error' && <AlertTriangle size={16} color="var(--danger)" />}
+      {type === 'info' && <RefreshCw size={16} color="var(--primary)" />}
+      <span>{message}</span>
+    </div>
+  );
+};
+
 export default function Home() {
   // App Steps
   // 1: Dashboard Landing, 2: Preview & Stats, 3: Processing Loop, 4: Results
@@ -154,6 +261,10 @@ export default function Home() {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
   };
+
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   // Log Console helper
   const addLog = (msg: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
@@ -622,12 +733,13 @@ export default function Home() {
       {/* TOAST SYSTEM CONTAINER */}
       <div className="toast-container">
         {toasts.map((t) => (
-          <div key={t.id} className={`toast toast-${t.type}`}>
-            {t.type === 'success' && <CheckCircle2 size={16} color="var(--success)" />}
-            {t.type === 'error' && <AlertTriangle size={16} color="var(--danger)" />}
-            {t.type === 'info' && <RefreshCw size={16} color="var(--primary)" />}
-            <span>{t.message}</span>
-          </div>
+          <DraggableToast 
+            key={t.id} 
+            id={t.id} 
+            message={t.message} 
+            type={t.type} 
+            onDismiss={removeToast} 
+          />
         ))}
       </div>
 
