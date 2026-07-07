@@ -1,0 +1,5 @@
+Name,Email,Phone,Company,City,State,Country,Status,Source,Possession Timeline,Description
+Jane Smith,jane.smith@example.com,+1 415 555 2671,GrowEasy,San Francisco,California,USA,GOOD_LEAD_FOLLOW_UP,leads_on_demand,Immediate,Interested in property investment
+Rajesh Kumar,rajesh.kumar@example.com,+91 98765 43210,Tech Corp,Bangalore,Karnataka,India,GOOD_LEAD_FOLLOW_UP,eden_park,3 months,Looking for 3BHK flat
+Priya Patel,,9876543211,,Mumbai,,India,DID_NOT_CONNECT,varah_swamy,,No email provided
+John Doe,john.doe@example.com,,,New Delhi,Delhi,India,BAD_LEAD,sarjapur_plots,,No phone provided
